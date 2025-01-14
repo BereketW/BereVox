@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Mic, FileText, History, Settings } from "lucide-react";
-import Link from "next/link";
 
 const container = {
   hidden: { opacity: 0 },
@@ -98,7 +97,7 @@ export default function Home() {
             },
           ].map((feature, index) => (
             <motion.div
-              key={feature.title}
+              key={index}
               variants={item}
               className="group relative overflow-hidden rounded-lg bg-white/50 p-6 hover:shadow-lg transition-shadow"
             >

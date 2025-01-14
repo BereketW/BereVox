@@ -23,7 +23,7 @@ export default function Header() {
       animate={{ y: 0 }}
       transition={{ type: "spring", stiffness: 100, damping: 20 }}
     >
-      <div className="container flex h-16 items-center justify-between px-4">
+      <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link href="/" className="flex items-center space-x-2">
           <Image
             src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/DALL%C2%B7E%202025-01-14%2014.06.45%20-%20A%20modern%20and%20minimalistic%20logo%20for%20a%20project%20titled%20'BereVox'%20(derived%20from%20Bereket%20and%20voice).%20The%20logo%20should%20feature%20a%20combination%20of%20a%20stylized%20mi-jIsDxMCVfzY8O7Tt728dNJlg8IDuFl.webp"

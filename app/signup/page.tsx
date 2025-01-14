@@ -17,7 +17,7 @@ import { Github } from "lucide-react";
 
 export default function SignUpPage() {
   return (
-    <div className="container flex items-center justify-center min-h-[calc(100vh-4rem)] px-4 py-12">
+    <div className="container flex mx-auto items-center justify-center min-h-[calc(100vh-4rem)] px-4 py-12">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

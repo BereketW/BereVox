@@ -14,8 +14,38 @@ import {
 } from "@/components/ui/card";
 import Link from "next/link";
 import { Github } from "lucide-react";
+import { useState } from "react";
+import { authClient } from "@/lib/auth-client";
+import { sign } from "crypto";
+// import { useRouter } from "next/navigation";
+// import { useRouter } from "next/router";
 
 export default function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  // const router = useRouter();
+
+  const signIn = async () => {
+    const { data, error } = await authClient.signIn.email(
+      { email, password },
+      {
+        onRequest: () => {
+          setIsLoading(true);
+        },
+        onSuccess: () => {
+          setIsLoading(false);
+          // console.log(data);
+          window.location.href = "/";
+        },
+        onError: () => {
+          setIsLoading(false);
+        },
+      }
+    );
+    setError(error?.message);
+  };
   return (
     <div className="container mx-auto flex items-center justify-center min-h-[calc(100vh-4rem)] px-4 py-12">
       <motion.div
@@ -34,13 +64,38 @@ export default function LoginPage() {
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" placeholder="m@example.com" type="email" />
+              <Input
+                onChange={(e) => {
+                  setError("");
+                  setEmail(e.target.value);
+                }}
+                id="email"
+                placeholder="m@example.com"
+                type="email"
+              />
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" />
+              <Input
+                onChange={(e) => {
+                  setError("");
+                  setPassword(e.target.value);
+                }}
+                id="password"
+                type="password"
+              />
             </div>
-            <Button className="w-full bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600">
+            {error && (
+              <p className="text-red-500 w-full text-center text-xs">{error}</p>
+            )}
+
+            <Button
+              disabled={isLoading}
+              onClick={signIn}
+              className={`${
+                isLoading && "cursor-not-allowed"
+              } w-full bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600`}
+            >
               Sign In
             </Button>
             <div className="relative">

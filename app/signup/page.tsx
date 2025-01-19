@@ -14,8 +14,38 @@ import {
 } from "@/components/ui/card";
 import Link from "next/link";
 import { Github } from "lucide-react";
+import { useState } from "react";
+import { authClient } from "@/lib/auth-client";
 
 export default function SignUpPage() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
+  const signUp = async () => {
+    const { data, error } = await authClient.signUp.email(
+      {
+        email,
+        password,
+        name,
+        image: undefined,
+      },
+      {
+        onRequest: (ctx) => {
+          //show loading
+        },
+        onSuccess: (ctx) => {
+          //redirect to the dashboard
+          setSuccess(true);
+        },
+        onError: (ctx) => {
+          setError(ctx.error.message);
+        },
+      }
+    );
+  };
+
   return (
     <div className="container flex mx-auto items-center justify-center min-h-[calc(100vh-4rem)] px-4 py-12">
       <motion.div
@@ -36,17 +66,46 @@ export default function SignUpPage() {
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="name">Name</Label>
-              <Input id="name" placeholder="John Doe" />
+              <Input
+                onChange={(e) => setName(e.target.value)}
+                id="name"
+                placeholder="John Doe"
+                className={`${success && "border border-green-400"}`}
+              />
             </div>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" placeholder="m@example.com" type="email" />
+              <Input
+                onChange={(e) => setEmail(e.target.value)}
+                id="email"
+                placeholder="m@example.com"
+                type="email"
+                className={`${success && "border border-green-400"}`}
+              />
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" />
+              <Input
+                onChange={(e) => setPassword(e.target.value)}
+                id="password"
+                className={`${success && "border border-green-400"}`}
+                type="password"
+              />
             </div>
-            <Button className="w-full bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600">
+            {error && (
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, ease: "anticipate" }}
+                className="text-sm text-red-400 w-full text-center"
+              >
+                {error}
+              </motion.p>
+            )}
+            <Button
+              onClick={signUp}
+              className="w-full bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600"
+            >
               Sign Up
             </Button>
             <div className="relative">
